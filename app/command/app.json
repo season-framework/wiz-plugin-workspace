@@ -1,0 +1,7 @@
+{
+    "id": "command",
+    "title": "Command Palette",
+    "category": "",
+    "description": "\ucee4\ub9e8\ub4dc \ud314\ub81b\ud2b8\nfeat. vs code",
+    "template": "wiz-workspace-app-command()"
+}

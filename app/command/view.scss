@@ -1,0 +1,56 @@
+.cmd-plt {
+    position: fixed;
+    z-index: 999999;
+    width: 500px;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3844d0;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+
+    .input-wrap {
+        height: auto !important;
+        padding: 3px;
+        border: 1px solid #3844d0;
+
+        .form-control:focus {
+            box-shadow: none;
+            border: 1px solid #ff3333;
+            color: black;
+        }
+
+        i.fa-search {
+            width: 40px;
+            font-size: 24px;
+            line-height: 32px;
+            text-align: center;
+        }
+
+        .root-path {
+            width: 60px;
+            font-size: 12px;
+            line-height: 32px;
+        }
+    }
+
+    .search-result {
+        $line-height: 24px;
+        max-height: $line-height * 10 + 15px;
+        list-style: none;
+        padding: 10px 5px 5px;
+
+        .list-item {
+            padding: 0 5px;
+            border-radius: 5px;
+            line-height: $line-height;
+            font-size: 16px;
+
+            &.active {
+                font-family: 'wiz-eb';
+                background-color: darkblue;
+            }
+        }
+    }
+}

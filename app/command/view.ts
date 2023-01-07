@@ -14,7 +14,7 @@ export class Component implements OnInit, AfterViewInit {
 
     constructor(
         public ref: ChangeDetectorRef,
-        public service: Service,
+        public service: Service
     ) {
         this.workspace = new Workspace(service, wiz);
     }
@@ -64,9 +64,7 @@ export class Component implements OnInit, AfterViewInit {
         await editor.open(0);
         await this.service.render(100);
         await editor.activate();
-        const i = this.service.rightmenu.top.findIndex(it => it.id === "workspace.app.command");
-        if (i < 0) return;
-        await this.service.rightmenu.toggle(this.service.rightmenu.top[i]);
+        await this.service.overlay.toggle();
     }
 
     private onKeydown(e) {

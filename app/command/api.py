@@ -1,5 +1,5 @@
 import os
-from glob import iglob
+import glob
 
 def search():
     root = wiz.request.query("root", True)
@@ -7,14 +7,14 @@ def search():
     workspace = wiz.workspace("service")
     fs = workspace.fs()
     abspath = fs.abspath()
-
-    iterator = iglob(f'**/*{text}*', recursive=True, root_dir=os.path.join(abspath, root))
+    root_dir = os.path.join(abspath, root)
+    iterator = glob.iglob(f'{root_dir}/**/*{text}*', recursive=True)
     cnt = 0
     res = []
     for f in iterator:
         if '__pycache__' in f: continue
         if f.split("/")[-1].startswith("."): continue
-
+        f = f[len(root_dir)+1:]
         res.append(f)
         cnt = cnt + 1
         if cnt >= 10: break

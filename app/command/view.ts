@@ -6,11 +6,9 @@ let timeoutId = null;
 
 export class Component implements OnInit, AfterViewInit {
     private list = [];
-    private display = [];
     private text = "";
     private idx = -1;
     private root = "src";
-    private showRoot = false;
 
     @ViewChild("searchInput") searchInput;
 
@@ -23,7 +21,6 @@ export class Component implements OnInit, AfterViewInit {
 
     public ngOnInit() {
         this.list = [];
-        this.display = [];
         this.text = "";
         this.idx = -1;
         this.render();
@@ -41,12 +38,10 @@ export class Component implements OnInit, AfterViewInit {
 
     private clear() {
         this.list = [];
-        this.display = [];
         this.render();
     }
 
-    private async open(i = null) {
-        if (i !== null) this.idx = i;
+    private async open() {
         if (this.idx < 0) return;
         if (this.list.length === 0) return;
 
@@ -95,59 +90,16 @@ export class Component implements OnInit, AfterViewInit {
 
     private rootMap(root) {
         const src = ['s', 'src'];
-        const portal = ['p', 'portal'];
+        // const portal = ['p', 'portal'];
         const config = ['c', 'config', 'conf'];
 
         if (src.includes(root)) return "src";
-        if (portal.includes(root)) return "portal";
+        // if (portal.includes(root)) return "portal";
         if (config.includes(root)) return "config";
-        if (root === "#root") {
-            this.showRoot = !this.showRoot;
-            this.clear();
-            this.text = "";
-            this.idx = -1;
-            this.render();
-        }
-    }
-
-    private highlight(list, text) {
-        const targets = text.split(" ");
-        const _s1 = `<strong class="text-bg-youtube">`;
-        const _s2 = `</strong>`;
-        const ou = _s1.length + _s2.length; // offset unit
-        return list.map(item => {
-            const arr = [];
-            targets.forEach(t => {
-                if (t.replace(/\s/g, "").length === 0) return;
-                [...item.matchAll(new RegExp(t, "gi"))].forEach(it => {
-                    arr.push({
-                        index: it.index,
-                        length: t.length,
-                    });
-                });
-            });
-            let offset = 0;
-            let res = item;
-            for (let i = 0; i < arr.length; i++) {
-                const { index, length } = arr[i];
-                const s = index + offset;
-                const e = s + length;
-                const before = res.slice(0, s);
-                const text = res.slice(s, e);
-                const after = res.slice(e);
-                res = `${before}${_s1}${text}${_s2}${after}`;
-                offset += ou;
-            }
-            return res;
-        });
     }
 
     private onChange() {
         this.idx = -1;
-        try {
-            this.text = this.text.toLowerCase();
-            this.render();
-        }catch {}
         const text = this.text;
         if (text.length === 0) {
             this.clear();
@@ -159,7 +111,7 @@ export class Component implements OnInit, AfterViewInit {
         if (root && arr.length >= 2 && root !== this.root) {
             this.root = root;
             this.text = arr.slice(1).join(" ");
-            this.clear();
+            this.render();
         }
 
         if (text.length === 0) return;
@@ -167,14 +119,13 @@ export class Component implements OnInit, AfterViewInit {
             clearTimeout(timeoutId);
         } catch { }
         timeoutId = setTimeout(async () => {
-            if (this.text.length === 0) return;
             const { code, data } = await wiz.call("search", { root: this.root, text });
             if (code !== 200) {
                 this.clear();
                 return;
             }
+
             this.list = data;
-            this.display = this.highlight(data, text);
             if (this.list.length > 0) this.idx = 0;
             this.render();
         }, 500);

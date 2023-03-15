@@ -177,7 +177,7 @@ export class FileEditor {
         };
 
         let extension = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
-        const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg'];
+        const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'ico'];
         const IS_IMG = imgExt.includes(extension);
         if (IS_IMG) {
             viewtypes[extension] = { viewref: ImageViewer, config: {} };

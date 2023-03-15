@@ -60,7 +60,12 @@ export class Component implements OnInit, AfterViewInit {
             editor = this.workspace.AppEditor(_data);
         }
         else if (_type === "file") {
-            editor = this.workspace.FileEditor(_data, {}, true);
+            let force = false;
+            try {
+                const ext = this.list[this.idx].split(".").slice(-1)[0];
+                if (['txt', 'nsh', 'sql', 'sh'].includes(ext.toLowerCase())) force = true;
+            } catch { }
+            editor = this.workspace.FileEditor(_data, {}, force);
         }
         else if (_type === "route") {
             editor = this.workspace.RouteEditor(_data);
@@ -156,7 +161,7 @@ export class Component implements OnInit, AfterViewInit {
         try {
             this.text = this.text.toLowerCase();
             this.render();
-        }catch {}
+        } catch { }
         const text = this.text;
         if (text.length === 0) {
             this.clear();

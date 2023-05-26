@@ -6,6 +6,7 @@ import shutil
 import datetime
 import json
 
+builder = wiz.model("workspace/builder")
 workspace = wiz.workspace("service")
 fs = workspace.fs()
 
@@ -37,17 +38,17 @@ def list(segment):
     res = []
 
     if len(segment) == 1 and segment[0] == "src":
-        res.append(dict(name='angular', path=os.path.join(path, 'angular'), type='angular'))
-        res.append(dict(name='apps/page', path=os.path.join(path, 'app', 'page'), type='mod.page'))
-        res.append(dict(name='apps/component', path=os.path.join(path, 'app', 'component'), type='mod.component'))
-        res.append(dict(name='apps/layout', path=os.path.join(path, 'app', 'layout'), type='mod.layout'))
-        res.append(dict(name='api', path=os.path.join(path, 'route'), type='mod.route'))
+        res.append(dict(name='angular', path=os.path.join(path, 'angular'), type='mod.folder'))
+        res.append(dict(name='app/page', path=os.path.join(path, 'app', 'page'), type='mod.page'))
+        res.append(dict(name='app/component', path=os.path.join(path, 'app', 'component'), type='mod.component'))
+        res.append(dict(name='app/layout', path=os.path.join(path, 'app', 'layout'), type='mod.layout'))
         res.append(dict(name='libs', path=os.path.join(path, 'angular', 'libs'), type='mod.libs'))
         res.append(dict(name='styles', path=os.path.join(path, 'angular', 'styles'), type='mod.styles'))
         res.append(dict(name='assets', path=os.path.join(path, 'assets'), type='mod.folder'))
-        res.append(dict(name='controller', path=os.path.join(path, 'controller'), type='mod.folder'))
-        res.append(dict(name='model', path=os.path.join(path, 'model'), type='mod.folder'))
-        res.append(dict(name='config', path=os.path.join('config'), type='mod.folder'))
+        res.append(dict(name='server/api', path=os.path.join(path, 'route'), type='mod.route'))
+        res.append(dict(name='server/controller', path=os.path.join(path, 'controller'), type='mod.folder'))
+        res.append(dict(name='server/model', path=os.path.join(path, 'model'), type='mod.folder'))
+        res.append(dict(name='server/config', path=os.path.join('config'), type='mod.folder'))
         wiz.response.status(200, res)
     
     if len(segment) == 3 and segment[1] == 'app':
@@ -75,6 +76,12 @@ def list(segment):
     if fs.isdir(path): 
         files = fs.files(path)
         for name in files:
+            try:
+                if segment[1] == 'angular':
+                    if name in ['styles', 'libs']:
+                        continue
+            except:
+                pass
             fpath = os.path.join(path, name)
             ftype = 'file' if fs.isfile(fpath) else 'folder'
             res.append(dict(name=name, path=fpath, type=ftype))
@@ -241,6 +248,5 @@ def upload_app(segment):
     wiz.response.status(200, notuploaded)
 
 def build(segment):
-    workspace.build()
-    workspace.route.build()
+    builder.build()
     wiz.response.status(200)

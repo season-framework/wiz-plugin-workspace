@@ -1,4 +1,8 @@
-test/
+export const DEFAULT_GITIGNORE = `cache/
+.vscode/
+/config/
+/test/
+/bundle/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -10,7 +14,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-/build/
+build/
 develop-eggs/
 dist/
 downloads/
@@ -137,3 +141,4 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+`;

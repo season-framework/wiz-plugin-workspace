@@ -59,7 +59,10 @@ export class Component implements OnInit, AfterViewInit {
         const _data = data.data;
         let editor = null;
         if (_type === "app") {
-            if (_data.mode === "portal") editor = await this.portalWorkspace.AppEditor(_data.category, _data);
+            if (_data.mode === "portal") {
+                const mod_id = _data["ng.build"].id.split(".")[1];
+                editor = await this.portalWorkspace.AppEditor(mod_id, _data);
+            }
             else editor = this.workspace.AppEditor(_data);
         }
         else if (_type === "file") {
@@ -68,11 +71,17 @@ export class Component implements OnInit, AfterViewInit {
                 const ext = this.list[this.idx].split(".").slice(-1)[0];
                 if (['txt', 'nsh', 'sql', 'sh'].includes(ext.toLowerCase())) force = true;
             } catch { }
-            if (_data.mode === "portal") editor = await this.portalWorkspace.FileEditor(_data.category, _data);
+            if (_data.mode === "portal") {
+                const mod_id = _data["ng.build"].id.split(".")[1];
+                editor = await this.portalWorkspace.FileEditor(mod_id, _data);
+            }
             else editor = this.workspace.FileEditor(_data, {}, force);
         }
         else if (_type === "route") {
-            if (_data.mode === "portal") editor = await this.portalWorkspace.RouteEditor(_data.category, _data);
+            if (_data.mode === "portal") {
+                const mod_id = _data["ng.build"].id.split(".")[1];
+                editor = await this.portalWorkspace.RouteEditor(mod_id, _data);
+            }
             else editor = this.workspace.RouteEditor(_data);
         }
         if (!editor) return;

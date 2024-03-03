@@ -6,8 +6,7 @@ def search():
     root = wiz.request.query("root", True)
     text = wiz.request.query("text", True)
     pattern = re.compile(text, re.IGNORECASE)
-    workspace = wiz.workspace("service")
-    fs = workspace.fs()
+    fs = wiz.project.fs()
     abspath = fs.abspath()
     root_dir = os.path.join(abspath, root)
     iterator = glob.iglob(f'{root_dir}/**/*', recursive=True)
@@ -52,8 +51,7 @@ def search():
 
 def load():
     _path = wiz.request.query("path", True)
-    workspace = wiz.workspace("service")
-    fs = workspace.fs()
+    fs = wiz.project.fs()
     abspath = fs.abspath()
     fullpath = os.path.join(abspath, _path)
     _i = os.path.join(fullpath, 'app.json')

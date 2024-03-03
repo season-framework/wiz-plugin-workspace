@@ -304,7 +304,7 @@ def upload(segment):
 
 def upload_root(segment):
     path = wiz.request.query("path", True)
-    fs = wiz.project.fs(path)
+    fs = wiz.project.fs("src", path)
     files = wiz.request.files()
     notuploaded = []
     
@@ -333,7 +333,7 @@ def upload_root(segment):
 
 def upload_app(segment):
     path = wiz.request.query("path", True)
-    fs = wiz.project.fs(path)
+    fs = wiz.project.fs("src", path)
 
     files = wiz.request.files()
     notuploaded = []
